@@ -14,17 +14,17 @@ class MoviesController < ApplicationController
     sort = params[:sort] || session[:sort]
     case sort
     when 'title'
-      ordering,@title_header = {:title => :asc}, 'bg-warning hilite'
+      ordering,@title_header = {:title => :asc}, 'hilite'
     when 'release_date'
-      ordering,@date_header = {:release_date => :asc}, 'bg-warning hilite'
+      ordering,@date_header = {:release_date => :asc}, 'hilite'
     end
     @all_ratings = Movie.all_ratings
     @selected_ratings = params[:ratings] || session[:ratings] || {}
-
+    
     if @selected_ratings == {}
       @selected_ratings = Hash[@all_ratings.map {|rating| [rating, rating]}]
     end
-
+    
     if params[:sort] != session[:sort] or params[:ratings] != session[:ratings]
       session[:sort] = sort
       session[:ratings] = @selected_ratings
@@ -60,15 +60,15 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+  
   def find_same_director
-    
     @movies = Movie.find(params[:id])
     @dir = @movies.director
-    if @dir==nil
+    if @dir==nil or @dir==''
       flash[:notice] = "'#{@movies.title}' has no director info"
       redirect_to movies_path
     end
-    @movies_same_director = Movie.find_with_same_director(@dir)
+    @movies_same_director = Movie.find_movie_same_director(@dir)
   end
   
 end

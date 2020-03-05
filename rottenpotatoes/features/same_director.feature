@@ -32,3 +32,22 @@ Scenario: can't find similar movies if we don't know director (sad path)
   When  I follow "Find Movies With Same Director"
   Then  I should be on the home page
   And   I should see "'Alien' has no director info"
+
+  
+Scenario: update director
+  When I go to the edit page for "Alien"
+  And  I fill in "Director" with "abc"
+  And  I press "Update Movie Info"
+  Then the director of "Alien" should be "abc"
+  
+Scenario: delete director to existing movie
+  When I go to the edit page for "Alien"
+  And  I fill in "Director" with ""
+  And  I press "Update Movie Info"
+  Then the director of "Alien" should be ""
+  
+Scenario: delete movie
+  Given I am on the details page for "Alien"
+  And  I press "Delete"
+  Then  I should be on the RottenPotatoes home page 
+  And   I should see "Movie 'Alien' deleted."

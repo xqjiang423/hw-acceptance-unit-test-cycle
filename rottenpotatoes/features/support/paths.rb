@@ -26,8 +26,8 @@ module NavigationHelpers
     when /^the details page for "(.*)"$/
     then movie_path(Movie.find_by_title($1).id)
       
-    when /^the similar movies page for "(.*)"$/
-    then same_director_path(Movie.find_by_title($1).id)
+    when /^the Similar Movies page for "(.*)"$/
+    then movies_same_director_path(Movie.find_by_title($1).id)
     
     else
       begin
